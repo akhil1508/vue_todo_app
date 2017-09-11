@@ -1,0 +1,69 @@
+<!Doctype html>
+<html>
+
+<head>
+    <title>Vue_task_management</title>
+    <link type="text/css" rel="stylesheet" href="./bulma.css">
+</head>
+
+<body>
+    <div id="root">
+        <button v-show="!newTaskClicked" v-on:click="addNewTask">Add new task</button>
+        <div v-show="newTaskClicked">
+            <div class="field">
+                <label class="label">Task name: </label>
+                <div class="control">
+                    <input type="text" class="input" v-model="newTaskName" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Task priority(1-5, defaults to 3)</label>
+                <div class="control">
+                    <input type="number" class="input" v-model="newTaskPriority">
+                </div>
+            </div>
+            <button v-on:click="updateTasks" :disabled="newTaskName == ''">Add the task</button>
+            </div>
+
+        <ul>
+            <li v-for="task in tasks">
+                {{task.name}}
+            </li>
+        </ul>
+        <button class="button is-primary">Login to save your tasks</button>
+        <button class="button is-secondary">Sign up</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <!-- <script src="./main.js"></script>-->
+    <script>
+        const app = new Vue({
+            el: "#root",
+            data: {
+                tasks: [],
+                newTask: {},
+                newTaskName: "",
+                newTaskPriority: 3,
+                newTaskClicked: false
+            },
+            methods: {
+                addNewTask() {
+                    this.newTaskClicked = true
+                    this.showNewTask = false
+                },
+                updateTasks() {
+                    if (this.newTaskName != "") {
+                        this.newTask["name"] = this.newTaskName
+                        this.newTask["priority"] = this.newTaskPriority
+                    }
+                    this.tasks.push(this.newTask)
+                    this.newTaskClicked = false
+                    this.newTask = {}
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
