@@ -23,28 +23,51 @@
                 </div>
             </div>
             <button v-on:click="updateTasks" :disabled="newTaskName == ''">Add the task</button>
-            </div>
+        </div>
 
         <ul>
             <li v-for="task in tasks">
                 {{task.name}}
             </li>
         </ul>
-        <button class="button is-primary">Login to save your tasks</button>
+        <button v-on:click="onLoginClick" class="button is-primary">Login to save your tasks</button>
         <button class="button is-secondary">Sign up</button>
+        <div class="modal" v-bind:class="{ 'is-active' : loginClicked}">
+            <div class="modal-content">
+                <form>
+                    <div class="field">
+                        <label class="label">E-mail</label>
+                        <div class="control">
+                            <input type="email" class="input" placeholder="email@email.email" v-model="email">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input type="password" class="input" placeholder="Password" v-model="password">
+                        </div>
+                    </div>
+                    <button type="submit" class="button is-primary" v-on:click="logIn">Login</button>
+                </form>
+            </div>
+            <button class="modal-close is-large" v-on:click="closeModal" aria-label="close"></button>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-   <!-- <script src="./main.js"></script>-->
+    <!-- <script src="./main.js"></script>-->
     <script>
         const app = new Vue({
             el: "#root",
             data: {
                 tasks: [],
+                loginClicked: false,
                 newTask: {},
                 newTaskName: "",
                 newTaskPriority: 3,
-                newTaskClicked: false
+                newTaskClicked: false,
+                email: '',
+                password: ''
             },
             methods: {
                 addNewTask() {
@@ -59,6 +82,15 @@
                     this.tasks.push(this.newTask)
                     this.newTaskClicked = false
                     this.newTask = {}
+                },
+                onLoginClick() {
+                    this.loginClicked = true
+                },
+                closeModal() {
+                    this.loginClicked = false
+                },
+                logIn() {
+                    // Send request to API
                 }
             }
         })
